@@ -21,24 +21,20 @@ const options = program.opts();
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      const list = await listContacts();
-      console.log("Contacts list: ", list);
-      break;
+      const contactsList = await listContacts();
+      return console.table(contactsList);
 
     case "get":
       const contact = await getContactById(id);
-      console.log("Get contact with this ID: ", contact);
-      break;
+      return console.log(`Get contact with this ID ${id}: `, contact);
 
     case "add":
-      const contacts = await addContact(name, email, phone);
-      console.log("Add this contact: ", contacts);
-      break;
+      const newContact = await addContact(name, email, phone);
+      return console.log("Add this contact: ", newContact);
 
     case "remove":
-      const deletedContact = await removeContact();
-      console.log("Delete this contact: ", deletedContact);
-      break;
+      const removedContact = await removeContact(id);
+      return console.log(removedContact);
 
     default:
       console.warn("\x1B[31m Unknown action type!");

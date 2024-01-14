@@ -1,7 +1,8 @@
 const fs = require("fs").promises;
 const path = require("path");
 const { nanoid } = require("nanoid");
-const contactsPath = path.join("db", "contacts.json");
+
+const contactsPath = path.join(__dirname, "db", "contacts.json");
 
 const listContacts = async () => {
   // ...твій код. Повертає масив контактів.
@@ -37,21 +38,13 @@ async function addContact(name, email, phone) {
 async function removeContact(contactId) {
   // ...твій код. Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
   const contactsArr = await listContacts();
-
-  const deleteContactId = contactsArr.findIndex(
-    (contact) => contact.id === contactId
-  );
-
-  if (deleteContactId === -1) {
-    return null;
-  }
-
-  const [result] = contactsArr.splice(deleteContactId, 1);
-
+  const index = contactsArr.findIndex((contact) => contact.id === contactId);
+  if (index === -1) return null;
+  const [deletedContact] = contactsArr.splice(index, 1);
   await fs.writeFile(contactsPath, JSON.stringify(contactsArr, null, 2));
-
-  return result;
+  return deletedContact;
 }
+removeContact("e6ywwRe4jcqxXfCZOj_1e");
 
 const contactsActions = {
   listContacts,
